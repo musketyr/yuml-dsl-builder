@@ -7,5 +7,5 @@ class Note {
 
     String text
     String color
-
+    Type type
 }
