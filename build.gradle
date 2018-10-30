@@ -1,0 +1,12 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:2.5.2'
+    testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
+}
+
+repositories {
+    jcenter()
+}
