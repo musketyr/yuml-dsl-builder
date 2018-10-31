@@ -4,15 +4,16 @@ import spock.lang.Specification
 
 class DiagramSpec extends Specification {
 
-
-//    [note: You can stick notes on diagrams too!{bg:skyblue}]
-//    [Customer]<>1-orders 0..*>[Order]
-//    [Order]++*-*>[LineItem]
-//    [Order]-1>[DeliveryMethod]
-//    [Order]*-*>[Product]
-//    [Category]<->[Product]
-//    [DeliveryMethod]^[National]
-//    [DeliveryMethod]^[International]
+    private static final String EXPECTED_DIAGRAM = '''
+        [note: You can stick notes on diagrams too!{bg:skyblue}]
+        [Customer]<>1-orders 0..*>[Order]
+        [Order]++*-*>[LineItem]
+        [Order]-1>[DeliveryMethod]
+        [Order]*-*>[Product]
+        [Category]<->[Product]
+        [DeliveryMethod]^[National]
+        [DeliveryMethod]^[International]
+    '''.stripIndent().trim()
 
     void 'create orders diagram'() {
         given:
@@ -44,7 +45,7 @@ class DiagramSpec extends Specification {
             diagram.relationships.add(new Relationship(
                 source: customer,
                 sourceCardinality: '1',
-                title: 'orders',
+                destinationTitle: 'orders',
                 destination: order,
                 destinationCardinality: '0..*',
                 type: RelationshipType.AGGREGATION
@@ -62,6 +63,13 @@ class DiagramSpec extends Specification {
                 source: order,
                 destination: deliveryMethod,
                 destinationCardinality: '1'
+            ))
+
+            diagram.relationships.add(new Relationship(
+                source: order,
+                sourceCardinality: '*',
+                destination: product,
+                destinationCardinality: '*'
             ))
 
             diagram.relationships.add(new Relationship(
@@ -83,7 +91,7 @@ class DiagramSpec extends Specification {
             ))
 
         expect:
-            true == false
+            diagram.toString().trim() == EXPECTED_DIAGRAM
     }
 
 
