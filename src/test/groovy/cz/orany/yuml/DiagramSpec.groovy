@@ -55,8 +55,8 @@ class DiagramSpec extends Specification {
                 bidirectional true
             }
 
-            inheritance('National', 'DeliveryMethod')
-            inheritance('International', 'DeliveryMethod')
+            type 'National' inherits from type 'DeliveryMethod'
+            type'International' inherits from type 'DeliveryMethod'
         }
     }
 

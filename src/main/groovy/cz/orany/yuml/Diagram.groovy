@@ -13,8 +13,12 @@ class Diagram {
         diagram
     }
 
+    static From getFrom() {
+        return From.FROM
+    }
+
     Collection<Note> notes = new LinkedHashSet<>()
-    Map<String, Type> types = [:].withDefault { key -> new Type(key.toString()) }
+    Map<String, Type> types = [:].withDefault { key -> new Type(this, key.toString()) }
     Collection<Relationship> relationships = new LinkedHashSet<>()
 
     Note note(String text, String color = null) {
