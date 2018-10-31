@@ -19,11 +19,29 @@ class Relationship {
 
     boolean bidirectional
 
+    Relationship bidirectional(boolean bidirectional) {
+        this.bidirectional = bidirectional
+        return this
+    }
+
+
     String sourceCardinality
     String sourceTitle
 
+    Relationship source(String cardinality, String title = null) {
+        this.sourceCardinality = cardinality
+        this.sourceTitle = title
+        this
+    }
+
     String destinationCardinality
     String destinationTitle
+
+    Relationship destination(String cardinality, String title = null) {
+        this.destinationCardinality = cardinality
+        this.destinationTitle = title
+        this
+    }
 
     @Override
     String toString() {

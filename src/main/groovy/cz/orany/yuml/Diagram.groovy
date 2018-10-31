@@ -7,6 +7,12 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
 class Diagram {
 
+    static Diagram build(@DelegatesTo(value = Diagram, strategy = Closure.DELEGATE_FIRST) Closure definition = Closure.IDENTITY) {
+        Diagram diagram = new Diagram()
+        diagram.with definition
+        diagram
+    }
+
     Collection<Note> notes = new LinkedHashSet<>()
     Map<String, Type> types = [:].withDefault { key -> new Type(key.toString()) }
     Collection<Relationship> relationships = new LinkedHashSet<>()
@@ -21,8 +27,46 @@ class Diagram {
         types[name]
     }
 
-    Relationship relationship(Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
-        Relationship relationship = new Relationship(source, type, destination)
+    Relationship aggregation(
+        String source,
+        String destination,
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+    ) {
+        return relationship(source, RelationshipType.AGGREGATION, destination, additionalProperties)
+    }
+
+    Relationship composition(
+        String source,
+        String destination,
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+    ) {
+        return relationship(source, RelationshipType.COMPOSITION, destination, additionalProperties)
+    }
+
+    Relationship inheritance(
+        String source,
+        String destination,
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+    ) {
+        return relationship(source, RelationshipType.INHERITANCE, destination, additionalProperties)
+    }
+
+    Relationship association(
+        String source,
+        String destination,
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+    ) {
+        return relationship(source, RelationshipType.ASSOCIATION, destination, additionalProperties)
+    }
+
+    Relationship relationship(
+        String source,
+        RelationshipType relationshipType,
+        String destination,
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+    ) {
+        Relationship relationship = new Relationship(type(source), relationshipType, type(destination))
+        relationship.with additionalProperties
         this.relationships.add(relationship)
         return relationship
     }

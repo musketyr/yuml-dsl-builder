@@ -1,5 +1,6 @@
 package cz.orany.yuml
 
+import groovy.transform.CompileStatic
 import spock.lang.Specification
 
 class DiagramSpec extends Specification {
@@ -17,38 +18,7 @@ class DiagramSpec extends Specification {
 
     void 'create orders diagram'() {
         given:
-            Diagram diagram =  new Diagram().with {
-                note('You can stick notes on diagrams too!','skyblue')
-
-                relationship(type('Customer'), RelationshipType.AGGREGATION, type('Order')).with {
-                    sourceCardinality = '1'
-                    destinationTitle = 'orders'
-                    destinationCardinality = '0..*'
-                }
-
-                relationship(type('Order'), RelationshipType.COMPOSITION, type('LineItem')).with {
-                    sourceCardinality = '*'
-                    destinationCardinality = '*'
-                }
-
-                relationship(type('Order'), type('DeliveryMethod')).with {
-                    destinationCardinality = '1'
-                }
-
-                relationship(type('Order'), type('Product')).with {
-                    sourceCardinality = '*'
-                    destinationCardinality ='*'
-                }
-
-                relationship(type('Category'), type('Product')).with {
-                    bidirectional = true
-                }
-
-                relationship(type('National'), RelationshipType.INHERITANCE, type('DeliveryMethod'))
-                relationship(type('International'), RelationshipType.INHERITANCE, type('DeliveryMethod'))
-
-                it
-            }
+            Diagram diagram = buildDiagram()
 
         expect:
             diagram.toString().trim() == EXPECTED_DIAGRAM
@@ -57,5 +27,37 @@ class DiagramSpec extends Specification {
             diagram.relationships*.destination.every { it in diagram.types }
     }
 
+    @CompileStatic
+    private static Diagram buildDiagram() {
+        Diagram.build {
+            note('You can stick notes on diagrams too!', 'skyblue')
+
+            aggregation('Customer', 'Order') {
+                source '1'
+                destination '0..*', 'orders'
+            }
+
+            composition('Order', 'LineItem') {
+                source '*'
+                destination '*'
+            }
+
+            association('Order', 'DeliveryMethod') {
+                destination '1'
+            }
+
+            association('Order', 'Product') {
+                source '*'
+                destination '*'
+            }
+
+            association('Category', 'Product') {
+                bidirectional true
+            }
+
+            inheritance('National', 'DeliveryMethod')
+            inheritance('International', 'DeliveryMethod')
+        }
+    }
 
 }
