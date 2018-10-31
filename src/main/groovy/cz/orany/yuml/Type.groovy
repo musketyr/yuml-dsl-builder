@@ -7,7 +7,11 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
 class Type {
 
-    String name
+    final String name
+
+    Type(String name) {
+        this.name = name
+    }
 
     @Override
     String toString() {

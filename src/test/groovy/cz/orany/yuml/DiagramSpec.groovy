@@ -17,81 +17,44 @@ class DiagramSpec extends Specification {
 
     void 'create orders diagram'() {
         given:
-            Diagram diagram =  new Diagram()
+            Diagram diagram =  new Diagram().with {
+                note('You can stick notes on diagrams too!','skyblue')
 
-            diagram.notes.add(new Note(
-                text: 'You can stick notes on diagrams too!',
-                color: 'skyblue'
-            ))
+                relationship(type('Customer'), RelationshipType.AGGREGATION, type('Order')).with {
+                    sourceCardinality = '1'
+                    destinationTitle = 'orders'
+                    destinationCardinality = '0..*'
+                }
 
-            Type customer = new Type(name: 'Customer')
-            Type order = new Type(name: 'Order')
-            Type lineItem = new Type(name: 'LineItem')
-            Type deliveryMethod = new Type(name: 'DeliveryMethod')
-            Type product = new Type(name: 'Product')
-            Type category = new Type(name: 'Category')
-            Type nationalDeliveryMethod = new Type(name: 'National')
-            Type internationalDeliveryMethod = new Type(name: 'International')
+                relationship(type('Order'), RelationshipType.COMPOSITION, type('LineItem')).with {
+                    sourceCardinality = '*'
+                    destinationCardinality = '*'
+                }
 
-            diagram.types.add(customer)
-            diagram.types.add(order)
-            diagram.types.add(lineItem)
-            diagram.types.add(deliveryMethod)
-            diagram.types.add(product)
-            diagram.types.add(category)
-            diagram.types.add(nationalDeliveryMethod)
-            diagram.types.add(internationalDeliveryMethod)
+                relationship(type('Order'), type('DeliveryMethod')).with {
+                    destinationCardinality = '1'
+                }
 
-            diagram.relationships.add(new Relationship(
-                source: customer,
-                sourceCardinality: '1',
-                destinationTitle: 'orders',
-                destination: order,
-                destinationCardinality: '0..*',
-                type: RelationshipType.AGGREGATION
-            ))
+                relationship(type('Order'), type('Product')).with {
+                    sourceCardinality = '*'
+                    destinationCardinality ='*'
+                }
 
-            diagram.relationships.add(new Relationship(
-                source: order,
-                sourceCardinality: '*',
-                destination: lineItem,
-                destinationCardinality: '*',
-                type: RelationshipType.COMPOSITION
-            ))
+                relationship(type('Category'), type('Product')).with {
+                    bidirectional = true
+                }
 
-            diagram.relationships.add(new Relationship(
-                source: order,
-                destination: deliveryMethod,
-                destinationCardinality: '1'
-            ))
+                relationship(type('National'), RelationshipType.INHERITANCE, type('DeliveryMethod'))
+                relationship(type('International'), RelationshipType.INHERITANCE, type('DeliveryMethod'))
 
-            diagram.relationships.add(new Relationship(
-                source: order,
-                sourceCardinality: '*',
-                destination: product,
-                destinationCardinality: '*'
-            ))
-
-            diagram.relationships.add(new Relationship(
-                source: category,
-                destination: product,
-                bidirectional: true
-            ))
-
-            diagram.relationships.add(new Relationship(
-                source: nationalDeliveryMethod,
-                destination: deliveryMethod,
-                type: RelationshipType.INHERITANCE
-            ))
-
-            diagram.relationships.add(new Relationship(
-                source: internationalDeliveryMethod,
-                destination: deliveryMethod,
-                type: RelationshipType.INHERITANCE
-            ))
+                it
+            }
 
         expect:
             diagram.toString().trim() == EXPECTED_DIAGRAM
+
+            diagram.relationships*.source.every { it in diagram.types }
+            diagram.relationships*.destination.every { it in diagram.types }
     }
 
 

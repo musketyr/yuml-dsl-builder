@@ -7,14 +7,21 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode
 class Relationship {
 
-    RelationshipType type = RelationshipType.ASSOCIATION
+    final Type source
+    final RelationshipType type
+    final Type destination
+
+    Relationship(Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
+        this.source = source
+        this.type = type
+        this.destination = destination
+    }
+
     boolean bidirectional
 
-    Type source
     String sourceCardinality
     String sourceTitle
 
-    Type destination
     String destinationCardinality
     String destinationTitle
 
