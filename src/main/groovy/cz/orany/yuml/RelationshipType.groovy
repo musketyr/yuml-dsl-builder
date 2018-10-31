@@ -1,8 +1,9 @@
 package cz.orany.yuml
 
 enum RelationshipType {
-    COMPOSITION,
+    ASSOCIATION,
     AGGREGATION,
+    COMPOSITION,
     DEPENDENCY,
-    INHERITANCE
+    INHERITANCE,
 }

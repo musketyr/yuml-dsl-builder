@@ -1,6 +1,5 @@
 package cz.orany.yuml
 
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 class DiagramSpec extends Specification {
@@ -15,8 +14,7 @@ class DiagramSpec extends Specification {
 //    [DeliveryMethod]^[National]
 //    [DeliveryMethod]^[International]
 
-    @PendingFeature
-    void 'create orders digaram'() {
+    void 'create orders diagram'() {
         given:
             Diagram diagram =  new Diagram()
 
@@ -44,8 +42,46 @@ class DiagramSpec extends Specification {
             diagram.types.add(internationalDeliveryMethod)
 
             diagram.relationships.add(new Relationship(
-
+                source: customer,
+                sourceCardinality: '1',
+                title: 'orders',
+                destination: order,
+                destinationCardinality: '0..*',
+                type: RelationshipType.AGGREGATION
             ))
+
+            diagram.relationships.add(new Relationship(
+                source: order,
+                sourceCardinality: '*',
+                destination: lineItem,
+                destinationCardinality: '*',
+                type: RelationshipType.COMPOSITION
+            ))
+
+            diagram.relationships.add(new Relationship(
+                source: order,
+                destination: deliveryMethod,
+                destinationCardinality: '1'
+            ))
+
+            diagram.relationships.add(new Relationship(
+                source: category,
+                destination: product,
+                bidirectional: true
+            ))
+
+            diagram.relationships.add(new Relationship(
+                source: nationalDeliveryMethod,
+                destination: deliveryMethod,
+                type: RelationshipType.INHERITANCE
+            ))
+
+            diagram.relationships.add(new Relationship(
+                source: internationalDeliveryMethod,
+                destination: deliveryMethod,
+                type: RelationshipType.INHERITANCE
+            ))
+
         expect:
             true == false
     }

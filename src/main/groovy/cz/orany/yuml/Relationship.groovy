@@ -6,7 +6,8 @@ import groovy.transform.EqualsAndHashCode
 class Relationship {
 
     String title
-    RelationshipType type
+    RelationshipType type = RelationshipType.ASSOCIATION
+    boolean bidirectional
 
     Type source
     String sourceCardinality
