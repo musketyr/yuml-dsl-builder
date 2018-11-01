@@ -20,6 +20,14 @@ class Type {
         return new InheritanceBuilder(diagram, this)
     }
 
+    AggregationOrCompositionBuilder has(Object sourceCardinality) {
+        return new AggregationOrCompositionBuilder(diagram, this, RelationshipType.AGGREGATION, sourceCardinality as String)
+    }
+
+    AggregationOrCompositionBuilder owns(Object sourceCardinality) {
+        return new AggregationOrCompositionBuilder(diagram, this, RelationshipType.COMPOSITION, sourceCardinality as String)
+    }
+
     @Override
     String toString() {
         return "[$name]"

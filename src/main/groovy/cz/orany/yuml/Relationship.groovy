@@ -43,6 +43,11 @@ class Relationship {
         this
     }
 
+    Relationship called(String sourceTitle) {
+        this.sourceTitle = sourceTitle
+        this
+    }
+
     @Override
     String toString() {
         return type.toString(this)

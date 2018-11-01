@@ -17,6 +17,18 @@ class Diagram {
         return From.FROM
     }
 
+    static Integer getZero() {
+        return 0
+    }
+
+    static Integer getOne() {
+        return 1
+    }
+
+    static String getMany() {
+        return '*'
+    }
+
     Collection<Note> notes = new LinkedHashSet<>()
     Map<String, Type> types = [:].withDefault { key -> new Type(this, key.toString()) }
     Collection<Relationship> relationships = new LinkedHashSet<>()
