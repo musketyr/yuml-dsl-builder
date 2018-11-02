@@ -30,7 +30,7 @@ class DiagramSpec extends Specification {
     @Unroll
     void 'create #title diagram'() {
         expect:
-            diagram.toString().trim() == expected
+            diagram.toYuml().trim() == expected
 
             diagram.relationships*.source.every { it in diagram.types }
             diagram.relationships*.destination.every { it in diagram.types }

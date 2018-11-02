@@ -1,10 +1,9 @@
 package cz.orany.yuml.dsl;
 
-import cz.orany.yuml.Diagram;
 import cz.orany.yuml.Type;
 
 public class InheritanceBuilder {
-    public InheritanceBuilder(Diagram diagram, Type destination) {
+    public InheritanceBuilder(DiagramDefinition diagram, Type destination) {
         this.source = destination;
         this.diagram = diagram;
     }
@@ -14,5 +13,5 @@ public class InheritanceBuilder {
     }
 
     private final Type source;
-    private final Diagram diagram;
+    private final DiagramDefinition diagram;
 }

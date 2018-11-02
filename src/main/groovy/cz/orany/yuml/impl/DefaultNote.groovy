@@ -1,17 +1,19 @@
-package cz.orany.yuml
+package cz.orany.yuml.impl
 
+import cz.orany.yuml.Note
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 
 @CompileStatic
 @EqualsAndHashCode
-class Note {
+class DefaultNote implements Note {
 
     final String text
     final String color
 
-    @PackageScope Note(String text, String color = null) {
+    @PackageScope
+    DefaultNote(String text, String color = null) {
         this.text = text
         this.color = color
     }

@@ -1,6 +1,7 @@
 package cz.orany.yuml.dsl;
 
-import cz.orany.yuml.*;
+import cz.orany.yuml.Note;
+import cz.orany.yuml.RelationshipType;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 

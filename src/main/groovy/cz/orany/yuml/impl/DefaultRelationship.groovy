@@ -1,18 +1,21 @@
-package cz.orany.yuml
+package cz.orany.yuml.impl
 
+import cz.orany.yuml.Relationship
+import cz.orany.yuml.RelationshipType
+import cz.orany.yuml.Type
 import cz.orany.yuml.dsl.RelationshipDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 
 @CompileStatic
 @EqualsAndHashCode
-class Relationship implements RelationshipDefinition {
+class DefaultRelationship implements Relationship, RelationshipDefinition {
 
     final Type source
     final RelationshipType type
     final Type destination
 
-    Relationship(Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
+    DefaultRelationship(Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
         this.source = source
         this.type = type
         this.destination = destination
@@ -20,7 +23,7 @@ class Relationship implements RelationshipDefinition {
 
     boolean bidirectional
 
-    Relationship bidirectional(boolean bidirectional) {
+    DefaultRelationship bidirectional(boolean bidirectional) {
         this.bidirectional = bidirectional
         return this
     }
@@ -29,7 +32,7 @@ class Relationship implements RelationshipDefinition {
     String sourceCardinality
     String sourceTitle
 
-    Relationship source(String cardinality, String title = null) {
+    DefaultRelationship source(String cardinality, String title = null) {
         this.sourceCardinality = cardinality
         this.sourceTitle = title
         this
@@ -38,13 +41,13 @@ class Relationship implements RelationshipDefinition {
     String destinationCardinality
     String destinationTitle
 
-    Relationship destination(String cardinality, String title = null) {
+    DefaultRelationship destination(String cardinality, String title = null) {
         this.destinationCardinality = cardinality
         this.destinationTitle = title
         this
     }
 
-    Relationship called(String sourceTitle) {
+    DefaultRelationship called(String sourceTitle) {
         this.sourceTitle = sourceTitle
         this
     }

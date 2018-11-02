@@ -1,5 +1,7 @@
-package cz.orany.yuml
+package cz.orany.yuml.impl
 
+import cz.orany.yuml.RelationshipType
+import cz.orany.yuml.Type
 import cz.orany.yuml.dsl.AggregationOrCompositionBuilder
 import cz.orany.yuml.dsl.From
 import cz.orany.yuml.dsl.InheritanceBuilder
@@ -9,13 +11,13 @@ import groovy.transform.EqualsAndHashCode
 
 @CompileStatic
 @EqualsAndHashCode
-class Type implements TypeDefinition {
+class DefaultType implements Type, TypeDefinition {
 
-    private final Diagram diagram
+    private final DefaultDiagram diagram
 
     final String name
 
-    Type(Diagram diagram, String name) {
+    DefaultType(DefaultDiagram diagram, String name) {
         this.name = name
         this.diagram = diagram
     }
