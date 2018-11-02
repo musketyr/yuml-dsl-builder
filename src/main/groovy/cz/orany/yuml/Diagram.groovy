@@ -39,8 +39,10 @@ class Diagram {
         return note
     }
 
-    Type type(String name) {
-        types[name]
+    Type type(String name, @DelegatesTo(value = Type, strategy = Closure.DELEGATE_FIRST) Closure builder = Closure.IDENTITY) {
+        Type type = types[name]
+        type.with builder
+        return type
     }
 
     Relationship aggregation(

@@ -35,9 +35,10 @@ class DiagramSpec extends Specification {
             diagram.relationships*.source.every { it in diagram.types }
             diagram.relationships*.destination.every { it in diagram.types }
         where:
-            title               | diagram                           | expected
-            'orders'            | buildOrderDiagram()               | EXPECTED_DIAGRAM
-            'literal diagram'   | buildDiagramDiagramLiteral()      | EXPECTED_DIAGRAM_DIAGRAM
+            title               | diagram                      | expected
+            'orders'            | buildOrderDiagram()          | EXPECTED_DIAGRAM
+            'literal diagram'   | buildDiagramDiagramLiteral() | EXPECTED_DIAGRAM_DIAGRAM
+            'literal diagram'   | buildDiagramDiagramGrouped() | EXPECTED_DIAGRAM_DIAGRAM
     }
 
     @CompileStatic
@@ -86,6 +87,26 @@ class DiagramSpec extends Specification {
             type 'Relationship' has one type 'Type' called 'source'
             type 'Relationship' has one type 'Type' called 'destination'
             type 'Relationship' owns one type 'RelationshipType'
+        }
+    }
+
+    @CompileStatic
+    private static Diagram buildDiagramDiagramGrouped() {
+        Diagram.build {
+            note 'YUML Diagram Components'
+
+            // diagram should have at least one type to be meaningful, rest is optional
+            type 'Diagram', {
+                has one to many type 'Type'
+                has zero to many type 'Note'
+                has zero to many type 'Relationship'
+            }
+
+            type 'Relationship', {
+                has one type 'Type' called 'source'
+                has one type 'Type' called 'destination'
+                owns one type 'RelationshipType'
+            }
         }
     }
 
