@@ -1,14 +1,16 @@
-package cz.orany.yuml.impl
+package cz.orany.yuml.model.impl
 
-import cz.orany.yuml.RelationshipType
-import cz.orany.yuml.Type
-import cz.orany.yuml.dsl.AggregationOrCompositionBuilder
-import cz.orany.yuml.dsl.From
-import cz.orany.yuml.dsl.InheritanceBuilder
-import cz.orany.yuml.dsl.TypeDefinition
+import cz.orany.yuml.model.RelationshipType
+import cz.orany.yuml.model.Type
+import cz.orany.yuml.model.dsl.AggregationOrCompositionBuilder
+import cz.orany.yuml.model.dsl.From
+import cz.orany.yuml.model.dsl.InheritanceBuilder
+import cz.orany.yuml.model.dsl.TypeDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.PackageScope
 
+@PackageScope
 @CompileStatic
 @EqualsAndHashCode
 class DefaultType implements Type, TypeDefinition {

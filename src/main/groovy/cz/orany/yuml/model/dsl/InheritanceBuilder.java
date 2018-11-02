@@ -1,6 +1,6 @@
-package cz.orany.yuml.dsl;
+package cz.orany.yuml.model.dsl;
 
-import cz.orany.yuml.Type;
+import cz.orany.yuml.model.Type;
 
 public class InheritanceBuilder {
     public InheritanceBuilder(DiagramDefinition diagram, Type destination) {

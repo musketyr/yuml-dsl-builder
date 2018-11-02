@@ -1,5 +1,6 @@
 package cz.orany.yuml
 
+import cz.orany.yuml.model.Diagram
 import groovy.transform.CompileStatic
 import spock.lang.Specification
 import spock.lang.Unroll

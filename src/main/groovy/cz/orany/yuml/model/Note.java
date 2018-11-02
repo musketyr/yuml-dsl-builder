@@ -1,4 +1,4 @@
-package cz.orany.yuml;
+package cz.orany.yuml.model;
 
 public interface Note {
     String getText();

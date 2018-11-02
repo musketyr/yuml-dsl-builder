@@ -1,4 +1,4 @@
-package cz.orany.yuml.dsl;
+package cz.orany.yuml.model.dsl;
 
 public interface RelationshipDefinition {
     RelationshipDefinition bidirectional(boolean bidirectional);

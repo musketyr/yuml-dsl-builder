@@ -1,7 +1,7 @@
-package cz.orany.yuml.dsl;
+package cz.orany.yuml.model.dsl;
 
-import cz.orany.yuml.RelationshipType;
-import cz.orany.yuml.Type;
+import cz.orany.yuml.model.RelationshipType;
+import cz.orany.yuml.model.Type;
 
 public class AggregationOrCompositionBuilder {
     public AggregationOrCompositionBuilder(DiagramDefinition diagram, Type destination, RelationshipType relationshipType, String cardinality) {

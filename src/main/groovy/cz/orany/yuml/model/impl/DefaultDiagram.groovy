@@ -1,25 +1,26 @@
-package cz.orany.yuml.impl
+package cz.orany.yuml.model.impl
 
-import cz.orany.yuml.*
-import cz.orany.yuml.dsl.DiagramDefinition
-import cz.orany.yuml.dsl.RelationshipDefinition
-import cz.orany.yuml.dsl.TypeDefinition
+import cz.orany.yuml.model.dsl.DiagramDefinition
+import cz.orany.yuml.model.dsl.RelationshipDefinition
+import cz.orany.yuml.model.dsl.TypeDefinition
+import cz.orany.yuml.model.Diagram
+import cz.orany.yuml.model.Note
+import cz.orany.yuml.model.Relationship
+import cz.orany.yuml.model.RelationshipType
+import cz.orany.yuml.model.Type
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.PackageScope
 
+@PackageScope
 @CompileStatic
 @EqualsAndHashCode
 class DefaultDiagram implements Diagram, DiagramDefinition {
 
-    static DefaultDiagram build(@DelegatesTo(value = DiagramDefinition, strategy = Closure.DELEGATE_FIRST) Closure definition) {
-        DefaultDiagram diagram = new DefaultDiagram()
-        diagram.with definition
-        diagram
-    }
-
     final Collection<DefaultNote> notes = new LinkedHashSet<>()
-    final Map<String, DefaultType> typesMap = [:].withDefault { key -> new DefaultType(this, key.toString()) }
     final Collection<DefaultRelationship> relationships = new LinkedHashSet<>()
+
+    private final Map<String, DefaultType> typesMap = [:].withDefault { key -> new DefaultType(this, key.toString()) }
 
     @Override
     Collection<? extends Type> getTypes() {

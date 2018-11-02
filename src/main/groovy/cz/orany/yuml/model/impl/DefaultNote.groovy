@@ -1,10 +1,11 @@
-package cz.orany.yuml.impl
+package cz.orany.yuml.model.impl
 
-import cz.orany.yuml.Note
+import cz.orany.yuml.model.Note
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 
+@PackageScope
 @CompileStatic
 @EqualsAndHashCode
 class DefaultNote implements Note {

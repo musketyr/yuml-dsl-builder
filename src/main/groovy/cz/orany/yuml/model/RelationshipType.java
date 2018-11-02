@@ -1,4 +1,4 @@
-package cz.orany.yuml;
+package cz.orany.yuml.model;
 
 import org.codehaus.groovy.runtime.StringGroovyMethods;
 
