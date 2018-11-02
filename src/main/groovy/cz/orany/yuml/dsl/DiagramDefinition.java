@@ -34,66 +34,66 @@ public interface DiagramDefinition {
 
     Type type(String name, @DelegatesTo(value = Type.class, strategy = Closure.DELEGATE_FIRST) Closure builder);
 
-    default Relationship aggregation(String source, String destination) {
+    default RelationshipDefinition aggregation(String source, String destination) {
         return aggregation(source, destination, Closure.IDENTITY);
     }
 
-    default Relationship aggregation(
+    default RelationshipDefinition aggregation(
         String source,
         String destination,
-        @DelegatesTo(value = Relationship.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
         return relationship(source, RelationshipType.AGGREGATION, destination, additionalProperties);
     }
 
-    default Relationship composition(String source, String destination) {
+    default RelationshipDefinition composition(String source, String destination) {
         return composition(source, destination, Closure.IDENTITY);
     }
 
-    default Relationship composition(
+    default RelationshipDefinition composition(
         String source,
         String destination,
-        @DelegatesTo(value = Relationship.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
         return relationship(source, RelationshipType.COMPOSITION, destination, additionalProperties);
     }
 
-    default Relationship inheritance(
+    default RelationshipDefinition inheritance(
         String source,
         String destination
     ) {
         return inheritance(source, destination, Closure.IDENTITY);
     }
 
-    default Relationship inheritance(
+    default RelationshipDefinition inheritance(
         String source,
         String destination,
-        @DelegatesTo(value = Relationship.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
         return relationship(source, RelationshipType.INHERITANCE, destination, additionalProperties);
     }
 
-    default Relationship association(String source, String destination) {
+    default RelationshipDefinition association(String source, String destination) {
         return association(source, destination, Closure.IDENTITY);
     }
 
-    default Relationship association(
+    default RelationshipDefinition association(
         String source,
         String destination,
-        @DelegatesTo(value = Relationship.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
         return relationship(source, RelationshipType.ASSOCIATION, destination, additionalProperties);
     }
 
-    default Relationship relationship(String source, RelationshipType relationshipType, String destination) {
+    default RelationshipDefinition relationship(String source, RelationshipType relationshipType, String destination) {
         return relationship(source, relationshipType, destination, Closure.IDENTITY);
     }
 
-    Relationship relationship(
+    RelationshipDefinition relationship(
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = Relationship.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     );
 
 }

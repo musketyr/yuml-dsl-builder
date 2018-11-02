@@ -1,5 +1,8 @@
-package cz.orany.yuml
+package cz.orany.yuml.dsl
 
+import cz.orany.yuml.Diagram
+import cz.orany.yuml.Relationship
+import cz.orany.yuml.Type
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -14,7 +17,7 @@ class InheritanceBuilder {
         this.diagram = diagram
     }
 
-    Relationship type(String destination) {
+    RelationshipDefinition type(String destination) {
         return diagram.inheritance(source.name, destination)
     }
 }

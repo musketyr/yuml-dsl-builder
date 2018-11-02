@@ -1,5 +1,8 @@
 package cz.orany.yuml
 
+import cz.orany.yuml.dsl.AggregationOrCompositionBuilder
+import cz.orany.yuml.dsl.From
+import cz.orany.yuml.dsl.InheritanceBuilder
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 

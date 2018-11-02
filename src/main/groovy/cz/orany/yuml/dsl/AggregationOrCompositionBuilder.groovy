@@ -1,4 +1,9 @@
-package cz.orany.yuml
+package cz.orany.yuml.dsl
+
+import cz.orany.yuml.Diagram
+import cz.orany.yuml.Relationship
+import cz.orany.yuml.RelationshipType
+import cz.orany.yuml.Type
 
 class AggregationOrCompositionBuilder {
 

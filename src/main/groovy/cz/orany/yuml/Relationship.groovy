@@ -1,11 +1,12 @@
 package cz.orany.yuml
 
+import cz.orany.yuml.dsl.RelationshipDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 
 @CompileStatic
 @EqualsAndHashCode
-class Relationship {
+class Relationship implements RelationshipDefinition {
 
     final Type source
     final RelationshipType type

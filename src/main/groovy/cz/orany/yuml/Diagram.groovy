@@ -1,6 +1,7 @@
 package cz.orany.yuml
 
 import cz.orany.yuml.dsl.DiagramDefinition
+import cz.orany.yuml.dsl.RelationshipDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 
@@ -37,7 +38,7 @@ class Diagram implements DiagramDefinition {
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
         Relationship relationship = new Relationship(type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
         relationship.with additionalProperties
