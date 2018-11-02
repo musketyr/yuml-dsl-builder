@@ -1,89 +1,45 @@
 package cz.orany.yuml
 
+import cz.orany.yuml.dsl.DiagramDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 
 @CompileStatic
 @EqualsAndHashCode
-class Diagram {
+class Diagram implements DiagramDefinition {
 
-    static Diagram build(@DelegatesTo(value = Diagram, strategy = Closure.DELEGATE_FIRST) Closure definition = Closure.IDENTITY) {
+    static Diagram build(@DelegatesTo(value = DiagramDefinition, strategy = Closure.DELEGATE_FIRST) Closure definition) {
         Diagram diagram = new Diagram()
         diagram.with definition
         diagram
-    }
-
-    static From getFrom() {
-        return From.FROM
-    }
-
-    static Integer getZero() {
-        return 0
-    }
-
-    static Integer getOne() {
-        return 1
-    }
-
-    static String getMany() {
-        return '*'
     }
 
     Collection<Note> notes = new LinkedHashSet<>()
     Map<String, Type> types = [:].withDefault { key -> new Type(this, key.toString()) }
     Collection<Relationship> relationships = new LinkedHashSet<>()
 
-    Note note(String text, String color = null) {
+    @Override
+    Note note(String text, String color) {
         Note note = new Note(text, color)
         this.notes.add(note)
         return note
     }
 
-    Type type(String name, @DelegatesTo(value = Type, strategy = Closure.DELEGATE_FIRST) Closure builder = Closure.IDENTITY) {
+    @Override
+    Type type(String name, @DelegatesTo(value = Type, strategy = Closure.DELEGATE_FIRST) Closure builder) {
         Type type = types[name]
         type.with builder
         return type
     }
 
-    Relationship aggregation(
-        String source,
-        String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
-    ) {
-        return relationship(source, RelationshipType.AGGREGATION, destination, additionalProperties)
-    }
-
-    Relationship composition(
-        String source,
-        String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
-    ) {
-        return relationship(source, RelationshipType.COMPOSITION, destination, additionalProperties)
-    }
-
-    Relationship inheritance(
-        String source,
-        String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
-    ) {
-        return relationship(source, RelationshipType.INHERITANCE, destination, additionalProperties)
-    }
-
-    Relationship association(
-        String source,
-        String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
-    ) {
-        return relationship(source, RelationshipType.ASSOCIATION, destination, additionalProperties)
-    }
-
+    @Override
     Relationship relationship(
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties = Closure.IDENTITY
+        @DelegatesTo(value = Relationship, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
     ) {
-        Relationship relationship = new Relationship(type(source), relationshipType, type(destination))
+        Relationship relationship = new Relationship(type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
         relationship.with additionalProperties
         this.relationships.add(relationship)
         return relationship
