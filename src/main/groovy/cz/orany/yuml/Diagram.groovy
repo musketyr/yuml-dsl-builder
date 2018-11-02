@@ -2,6 +2,7 @@ package cz.orany.yuml
 
 import cz.orany.yuml.dsl.DiagramDefinition
 import cz.orany.yuml.dsl.RelationshipDefinition
+import cz.orany.yuml.dsl.TypeDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 
@@ -27,7 +28,7 @@ class Diagram implements DiagramDefinition {
     }
 
     @Override
-    Type type(String name, @DelegatesTo(value = Type, strategy = Closure.DELEGATE_FIRST) Closure builder) {
+    Type type(String name, @DelegatesTo(value = TypeDefinition, strategy = Closure.DELEGATE_FIRST) Closure builder) {
         Type type = types[name]
         type.with builder
         return type

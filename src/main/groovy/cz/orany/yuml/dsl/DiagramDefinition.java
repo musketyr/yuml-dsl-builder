@@ -28,11 +28,11 @@ public interface DiagramDefinition {
 
     Note note(String text, String color);
 
-    default Type type(String name) {
+    default TypeDefinition type(String name) {
         return type(name, Closure.IDENTITY);
     }
 
-    Type type(String name, @DelegatesTo(value = Type.class, strategy = Closure.DELEGATE_FIRST) Closure builder);
+    TypeDefinition type(String name, @DelegatesTo(value = TypeDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure builder);
 
     default RelationshipDefinition aggregation(String source, String destination) {
         return aggregation(source, destination, Closure.IDENTITY);
