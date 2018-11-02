@@ -1,13 +1,12 @@
 package cz.orany.yuml.model.impl
 
+import cz.orany.yuml.model.Diagram
+import cz.orany.yuml.model.Note
+import cz.orany.yuml.model.RelationshipType
+import cz.orany.yuml.model.Type
 import cz.orany.yuml.model.dsl.DiagramDefinition
 import cz.orany.yuml.model.dsl.RelationshipDefinition
 import cz.orany.yuml.model.dsl.TypeDefinition
-import cz.orany.yuml.model.Diagram
-import cz.orany.yuml.model.Note
-import cz.orany.yuml.model.Relationship
-import cz.orany.yuml.model.RelationshipType
-import cz.orany.yuml.model.Type
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
