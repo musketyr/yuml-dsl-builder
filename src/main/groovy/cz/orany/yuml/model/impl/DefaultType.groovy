@@ -9,7 +9,9 @@ import cz.orany.yuml.model.dsl.TypeDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
+import groovy.transform.ToString
 
+@ToString
 @PackageScope
 @CompileStatic
 @EqualsAndHashCode
@@ -37,10 +39,5 @@ class DefaultType implements Type, TypeDefinition {
     @Override
     AggregationOrCompositionBuilder owns(Object sourceCardinality) {
         return new AggregationOrCompositionBuilder(diagram, this, RelationshipType.COMPOSITION, sourceCardinality as String)
-    }
-
-    @Override
-    String toString() {
-        return "[$name]"
     }
 }

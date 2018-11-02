@@ -7,7 +7,9 @@ import cz.orany.yuml.model.dsl.RelationshipDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
+import groovy.transform.ToString
 
+@ToString
 @PackageScope
 @CompileStatic
 @EqualsAndHashCode
@@ -52,10 +54,5 @@ class DefaultRelationship implements Relationship, RelationshipDefinition {
     DefaultRelationship called(String sourceTitle) {
         this.sourceTitle = sourceTitle
         this
-    }
-
-    @Override
-    String toString() {
-        return type.toString(this)
     }
 }

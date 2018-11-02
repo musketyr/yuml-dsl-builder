@@ -11,7 +11,9 @@ import cz.orany.yuml.model.Type
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
+import groovy.transform.ToString
 
+@ToString
 @PackageScope
 @CompileStatic
 @EqualsAndHashCode
@@ -25,11 +27,6 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
     @Override
     Collection<? extends Type> getTypes() {
         return typesMap.values()
-    }
-
-    @Override
-    String toYuml() {
-        return toString()
     }
 
     @Override
@@ -57,33 +54,6 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         relationship.with additionalProperties
         this.relationships.add(relationship)
         return relationship
-    }
-
-    @Override
-    String toString() {
-        assert typesMap
-
-        StringWriter stringWriter = new StringWriter()
-        PrintWriter printWriter = new PrintWriter(stringWriter)
-
-        for (Note note in notes) {
-            stringWriter.println(note)
-        }
-
-        Set<String> orphanTypes = new LinkedHashSet<>(typesMap.keySet())
-
-        for (Relationship relationship in relationships) {
-            orphanTypes.remove(relationship.source.name)
-            orphanTypes.remove(relationship.destination.name)
-
-            printWriter.println(relationship)
-        }
-
-        for (String name in orphanTypes) {
-            printWriter.println(typesMap[name])
-        }
-
-        return stringWriter.toString()
     }
 
 }

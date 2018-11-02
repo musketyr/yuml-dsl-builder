@@ -17,6 +17,4 @@ public interface Diagram {
     Collection<? extends Type> getTypes();
     Collection<? extends Relationship> getRelationships();
 
-    String toYuml();
-
 }

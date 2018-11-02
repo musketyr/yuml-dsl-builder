@@ -1,5 +1,7 @@
 package cz.orany.yuml
 
+import cz.orany.yuml.export.DiagramPrinter
+import cz.orany.yuml.export.YumlDiagramPrinter
 import cz.orany.yuml.model.Diagram
 import groovy.transform.CompileStatic
 import spock.lang.Specification
@@ -30,8 +32,10 @@ class DiagramSpec extends Specification {
 
     @Unroll
     void 'create #title diagram'() {
+        given:
+            DiagramPrinter printer = new YumlDiagramPrinter()
         expect:
-            diagram.toYuml().trim() == expected
+            printer.print(diagram).trim() == expected
 
             diagram.relationships*.source.every { it in diagram.types }
             diagram.relationships*.destination.every { it in diagram.types }
