@@ -4,6 +4,7 @@ import cz.orany.yuml.model.Diagram
 import cz.orany.yuml.model.Note
 import cz.orany.yuml.model.RelationshipType
 import cz.orany.yuml.model.Type
+import cz.orany.yuml.model.dsl.DiagramContentDefinition
 import cz.orany.yuml.model.dsl.DiagramDefinition
 import cz.orany.yuml.model.dsl.RelationshipDefinition
 import cz.orany.yuml.model.dsl.TypeDefinition
@@ -11,6 +12,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 import groovy.transform.ToString
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 
 @ToString
 @PackageScope
@@ -36,7 +39,12 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
     }
 
     @Override
-    DefaultType type(String name, @DelegatesTo(value = TypeDefinition, strategy = Closure.DELEGATE_FIRST) Closure builder) {
+    DefaultType type(
+        String name,
+        @DelegatesTo(value = TypeDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.TypeDefinition")
+        Closure<? extends DiagramContentDefinition> builder
+    ) {
         DefaultType type = typesMap[name]
         type.with builder
         return type
@@ -47,7 +55,9 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         DefaultRelationship relationship = new DefaultRelationship(type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
         relationship.with additionalProperties

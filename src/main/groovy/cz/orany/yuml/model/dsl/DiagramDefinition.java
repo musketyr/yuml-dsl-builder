@@ -4,6 +4,8 @@ import cz.orany.yuml.model.Note;
 import cz.orany.yuml.model.RelationshipType;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import groovy.transform.stc.ClosureParams;
+import groovy.transform.stc.SimpleType;
 
 public interface DiagramDefinition {
 
@@ -33,7 +35,12 @@ public interface DiagramDefinition {
         return type(name, Closure.IDENTITY);
     }
 
-    TypeDefinition type(String name, @DelegatesTo(value = TypeDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure builder);
+    TypeDefinition type(
+        String name,
+        @DelegatesTo(value = TypeDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.TypeDefinition")
+        Closure<? extends DiagramContentDefinition> builder
+    );
 
     default RelationshipDefinition aggregation(String source, String destination) {
         return aggregation(source, destination, Closure.IDENTITY);
@@ -42,7 +49,9 @@ public interface DiagramDefinition {
     default RelationshipDefinition aggregation(
         String source,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         return relationship(source, RelationshipType.AGGREGATION, destination, additionalProperties);
     }
@@ -54,7 +63,9 @@ public interface DiagramDefinition {
     default RelationshipDefinition composition(
         String source,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         return relationship(source, RelationshipType.COMPOSITION, destination, additionalProperties);
     }
@@ -69,7 +80,9 @@ public interface DiagramDefinition {
     default RelationshipDefinition inheritance(
         String source,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         return relationship(source, RelationshipType.INHERITANCE, destination, additionalProperties);
     }
@@ -81,7 +94,9 @@ public interface DiagramDefinition {
     default RelationshipDefinition association(
         String source,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         return relationship(source, RelationshipType.ASSOCIATION, destination, additionalProperties);
     }
@@ -94,7 +109,9 @@ public interface DiagramDefinition {
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure additionalProperties
+        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
+        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
+        Closure<? extends DiagramContentDefinition> additionalProperties
     );
 
 }

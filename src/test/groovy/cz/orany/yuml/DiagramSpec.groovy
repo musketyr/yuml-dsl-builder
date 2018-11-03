@@ -3,6 +3,8 @@ package cz.orany.yuml
 import cz.orany.yuml.export.DiagramPrinter
 import cz.orany.yuml.export.YumlDiagramPrinter
 import cz.orany.yuml.model.Diagram
+import cz.orany.yuml.model.dsl.DiagramContentDefinition
+import cz.orany.yuml.model.dsl.DiagramDefinition
 import groovy.transform.CompileStatic
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -40,10 +42,11 @@ class DiagramSpec extends Specification {
             diagram.relationships*.source.every { it in diagram.types }
             diagram.relationships*.destination.every { it in diagram.types }
         where:
-            title               | diagram                      | expected
-            'orders'            | buildOrderDiagram()          | EXPECTED_DIAGRAM
-            'literal diagram'   | buildDiagramDiagramLiteral() | EXPECTED_DIAGRAM_DIAGRAM
-            'literal diagram'   | buildDiagramDiagramGrouped() | EXPECTED_DIAGRAM_DIAGRAM
+            title                   | diagram                                   | expected
+            'orders'                | buildOrderDiagram()                       | EXPECTED_DIAGRAM
+            'literal diagram'       | buildDiagramDiagramLiteral()              | EXPECTED_DIAGRAM_DIAGRAM
+            'literal diagram'       | buildDiagramDiagramGrouped()              | EXPECTED_DIAGRAM_DIAGRAM
+            'diagram with methods'  | buildDiagramDiagramUsingHelperMethods()   | EXPECTED_DIAGRAM_DIAGRAM
     }
 
     @CompileStatic
@@ -112,6 +115,32 @@ class DiagramSpec extends Specification {
                 has one type 'Type' called 'destination'
                 owns one type 'RelationshipType'
             }
+        }
+    }
+
+    @CompileStatic
+    private static Diagram buildDiagramDiagramUsingHelperMethods() {
+        Diagram.build { DiagramDefinition diagram ->
+            note 'YUML Diagram Components'
+
+            buildDiagramRelationships(diagram)
+            buildRelationshipRelationship(diagram)
+        }
+    }
+
+    private static DiagramContentDefinition buildDiagramRelationships(DiagramDefinition diagram) {
+        diagram.with {
+            type 'Diagram' has one to many type 'Type'
+            type 'Diagram' has zero to many type 'Note'
+            type 'Diagram' has zero to many type 'Relationship'
+        }
+    }
+
+    private static DiagramContentDefinition buildRelationshipRelationship(DiagramDefinition diagram) {
+        diagram.with {
+            type 'Relationship' has one type 'Type' called 'source'
+            type 'Relationship' has one type 'Type' called 'destination'
+            type 'Relationship' owns one type 'RelationshipType'
         }
     }
 

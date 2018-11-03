@@ -1,6 +1,6 @@
 package cz.orany.yuml.model.dsl;
 
-public interface RelationshipDefinition {
+public interface RelationshipDefinition extends DiagramContentDefinition {
     RelationshipDefinition bidirectional(boolean bidirectional);
 
     default RelationshipDefinition source(String cardinality) {
