@@ -24,7 +24,12 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
     final Collection<DefaultNote> notes = new LinkedHashSet<>()
     final Collection<DefaultRelationship> relationships = new LinkedHashSet<>()
 
+    private final Object owner;
     private final Map<String, DefaultType> typesMap = [:].withDefault { key -> new DefaultType(this, key.toString()) }
+
+    DefaultDiagram(Object owner) {
+        this.owner = owner
+    }
 
     @Override
     Collection<? extends Type> getTypes() {
@@ -46,7 +51,7 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         Closure<? extends DiagramContentDefinition> builder
     ) {
         DefaultType type = typesMap[name]
-        type.with builder
+        withSameOwner type, builder
         return type
     }
 
@@ -60,9 +65,15 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
         DefaultRelationship relationship = new DefaultRelationship(type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
-        relationship.with additionalProperties
+        withSameOwner relationship, additionalProperties
         this.relationships.add(relationship)
         return relationship
+    }
+
+    protected <V, T> V withSameOwner(T self, Closure<V> closure) {
+        final Closure<V> clonedClosure = closure.rehydrate(self, owner, closure.thisObject)
+        clonedClosure.setResolveStrategy(Closure.DELEGATE_FIRST);
+        clonedClosure.call(self)
     }
 
 }

@@ -42,11 +42,12 @@ class DiagramSpec extends Specification {
             diagram.relationships*.source.every { it in diagram.types }
             diagram.relationships*.destination.every { it in diagram.types }
         where:
-            title                   | diagram                                   | expected
-            'orders'                | buildOrderDiagram()                       | EXPECTED_DIAGRAM
-            'literal diagram'       | buildDiagramDiagramLiteral()              | EXPECTED_DIAGRAM_DIAGRAM
-            'literal diagram'       | buildDiagramDiagramGrouped()              | EXPECTED_DIAGRAM_DIAGRAM
-            'diagram with methods'  | buildDiagramDiagramUsingHelperMethods()   | EXPECTED_DIAGRAM_DIAGRAM
+            title                           | diagram                                 | expected
+            'orders'                        | buildOrderDiagram()                     | EXPECTED_DIAGRAM
+            'literal diagram'               | buildDiagramDiagramLiteral()            | EXPECTED_DIAGRAM_DIAGRAM
+            'literal diagram'               | buildDiagramDiagramGrouped()            | EXPECTED_DIAGRAM_DIAGRAM
+            'diagram with methods'          | buildDiagramDiagramUsingHelperMethods() | EXPECTED_DIAGRAM_DIAGRAM
+            'diagram with internal methods' | buildDiagramWithInternalMethodCalls()   | EXPECTED_DIAGRAM_DIAGRAM
     }
 
     @CompileStatic
@@ -128,6 +129,7 @@ class DiagramSpec extends Specification {
         }
     }
 
+    @CompileStatic
     private static DiagramContentDefinition buildDiagramRelationships(DiagramDefinition diagram) {
         diagram.with {
             type 'Diagram' has one to many type 'Type'
@@ -136,6 +138,7 @@ class DiagramSpec extends Specification {
         }
     }
 
+    @CompileStatic
     private static DiagramContentDefinition buildRelationshipRelationship(DiagramDefinition diagram) {
         diagram.with {
             type 'Relationship' has one type 'Type' called 'source'
@@ -144,4 +147,27 @@ class DiagramSpec extends Specification {
         }
     }
 
+    @CompileStatic
+    private static Diagram buildDiagramWithInternalMethodCalls() {
+        Diagram.build {
+            note 'YUML Diagram Components'
+
+            // diagram should have at least one type to be meaningful, rest is optional
+            type 'Diagram', {
+                has one to many type 'Type'
+                has zero to many type notes
+                has zero to many type 'Relationship'
+            }
+
+            type 'Relationship', {
+                has one type 'Type' called 'source'
+                has one type 'Type' called 'destination'
+                owns one type 'RelationshipType'
+            }
+        }
+    }
+
+    private static String getNotes() {
+        return 'Note'
+    }
 }
