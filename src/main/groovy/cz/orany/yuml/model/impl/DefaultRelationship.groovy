@@ -3,6 +3,7 @@ package cz.orany.yuml.model.impl
 import cz.orany.yuml.model.Relationship
 import cz.orany.yuml.model.RelationshipType
 import cz.orany.yuml.model.Type
+import cz.orany.yuml.model.dsl.DiagramDefinition
 import cz.orany.yuml.model.dsl.RelationshipDefinition
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
@@ -15,11 +16,14 @@ import groovy.transform.ToString
 @EqualsAndHashCode
 class DefaultRelationship implements Relationship, RelationshipDefinition {
 
+    private final DefaultDiagram diagram
+
     final Type source
     final RelationshipType type
     final Type destination
 
-    DefaultRelationship(Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
+    DefaultRelationship(DefaultDiagram diagram, Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
+        this.diagram = diagram
         this.source = source
         this.type = type
         this.destination = destination
@@ -54,5 +58,10 @@ class DefaultRelationship implements Relationship, RelationshipDefinition {
     DefaultRelationship called(String sourceTitle) {
         this.sourceTitle = sourceTitle
         this
+    }
+
+    @Override
+    DiagramDefinition getDiagramDefinition() {
+        return diagram
     }
 }

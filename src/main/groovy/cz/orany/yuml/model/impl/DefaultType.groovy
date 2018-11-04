@@ -3,6 +3,7 @@ package cz.orany.yuml.model.impl
 import cz.orany.yuml.model.RelationshipType
 import cz.orany.yuml.model.Type
 import cz.orany.yuml.model.dsl.AggregationOrCompositionBuilder
+import cz.orany.yuml.model.dsl.DiagramDefinition
 import cz.orany.yuml.model.dsl.From
 import cz.orany.yuml.model.dsl.InheritanceBuilder
 import cz.orany.yuml.model.dsl.TypeDefinition
@@ -39,5 +40,10 @@ class DefaultType implements Type, TypeDefinition {
     @Override
     AggregationOrCompositionBuilder owns(Object sourceCardinality) {
         return new AggregationOrCompositionBuilder(diagram, this, RelationshipType.COMPOSITION, sourceCardinality as String)
+    }
+
+    @Override
+    DiagramDefinition getDiagramDefinition() {
+        return diagram
     }
 }

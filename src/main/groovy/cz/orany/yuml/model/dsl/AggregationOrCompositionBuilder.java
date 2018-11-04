@@ -3,7 +3,8 @@ package cz.orany.yuml.model.dsl;
 import cz.orany.yuml.model.RelationshipType;
 import cz.orany.yuml.model.Type;
 
-public class AggregationOrCompositionBuilder {
+public final class AggregationOrCompositionBuilder implements HasDiagramDefinition {
+
     public AggregationOrCompositionBuilder(DiagramDefinition diagram, Type destination, RelationshipType relationshipType, String cardinality) {
         this.diagram = diagram;
         this.destination = destination;
@@ -17,6 +18,11 @@ public class AggregationOrCompositionBuilder {
 
     public RelationshipDefinition type(String aSource) {
         return diagram.relationship(aSource, relationshipType, destination.getName()).source(cardinality);
+    }
+
+    @Override
+    public DiagramDefinition getDiagramDefinition() {
+        return diagram;
     }
 
     private final DiagramDefinition diagram;

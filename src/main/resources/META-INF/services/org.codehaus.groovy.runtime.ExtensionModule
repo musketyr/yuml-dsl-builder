@@ -1,0 +1,4 @@
+moduleName=yuml-extra
+moduleVersion=0.1.0
+extensionClasses=cz.orany.yuml.stereotype.StereotypeExtensions
+staticExtensionClasses=

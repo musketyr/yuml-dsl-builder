@@ -32,6 +32,16 @@ class DiagramSpec extends Specification {
         [RelationshipType]++1->[Relationship]
     '''.stripIndent().trim()
 
+    private static final String EXPECTED_DIAGRAM_STEROTYPES = '''
+        [note: YUML Diagram Components]
+        [<<Type>>]<>1..*->[<<Diagram>>]
+        [<<Note>>]<>0..*->[<<Diagram>>]
+        [<<Relationship>>]<>0..*->[<<Diagram>>]
+        [<<Type>>]<>source 1->[<<Relationship>>]
+        [<<Type>>]<>destination 1->[<<Relationship>>]
+        [<<RelationshipType>>]++1->[<<Relationship>>]
+    '''.stripIndent().trim()
+
     @Unroll
     void 'create #title diagram'() {
         given:
@@ -48,6 +58,7 @@ class DiagramSpec extends Specification {
             'literal diagram'               | buildDiagramDiagramGrouped()            | EXPECTED_DIAGRAM_DIAGRAM
             'diagram with methods'          | buildDiagramDiagramUsingHelperMethods() | EXPECTED_DIAGRAM_DIAGRAM
             'diagram with internal methods' | buildDiagramWithInternalMethodCalls()   | EXPECTED_DIAGRAM_DIAGRAM
+            'diagram with stereotypes'      | buildDiagramStereotypes()               | EXPECTED_DIAGRAM_STEROTYPES
     }
 
     @CompileStatic
@@ -164,6 +175,22 @@ class DiagramSpec extends Specification {
                 has one type 'Type' called 'destination'
                 owns one type 'RelationshipType'
             }
+        }
+    }
+
+    @CompileStatic
+    private static Diagram buildDiagramStereotypes() {
+        Diagram.build {
+            note 'YUML Diagram Components'
+
+            // diagram should have at least one stereotype to be meaningful, rest is optional
+            stereotype 'Diagram' has one to many stereotype 'Type'
+            stereotype 'Diagram' has zero to many stereotype 'Note'
+            stereotype 'Diagram' has zero to many stereotype 'Relationship'
+
+            stereotype 'Relationship' has one stereotype 'Type' called 'source'
+            stereotype 'Relationship' has one stereotype 'Type' called 'destination'
+            stereotype 'Relationship' owns one stereotype 'RelationshipType'
         }
     }
 

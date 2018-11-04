@@ -64,7 +64,7 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        DefaultRelationship relationship = new DefaultRelationship(type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
+        DefaultRelationship relationship = new DefaultRelationship(this, type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
         withSameOwner relationship, additionalProperties
         this.relationships.add(relationship)
         return relationship
