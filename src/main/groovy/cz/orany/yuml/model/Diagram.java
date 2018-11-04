@@ -6,6 +6,7 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface Diagram {
 
@@ -16,5 +17,7 @@ public interface Diagram {
     Collection<? extends Note> getNotes();
     Collection<? extends Type> getTypes();
     Collection<? extends Relationship> getRelationships();
+
+    Map<String, Object> getMetadata();
 
 }

@@ -10,7 +10,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 import groovy.transform.ToString
 
-@ToString
+@ToString(excludes = 'diagramDefinition')
 @PackageScope
 @CompileStatic
 @EqualsAndHashCode

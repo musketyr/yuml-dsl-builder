@@ -4,10 +4,12 @@ import cz.orany.yuml.model.Diagram;
 import cz.orany.yuml.model.Note;
 import cz.orany.yuml.model.Relationship;
 import cz.orany.yuml.model.Type;
+import cz.orany.yuml.properties.PropertiesDiagramHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -28,46 +30,58 @@ public class YumlDiagramPrinter implements DiagramPrinter {
             orphanTypes.remove(relationship.getSource().getName());
             orphanTypes.remove(relationship.getDestination().getName());
 
-            printWriter.println(print(relationship));
+            printWriter.println(print(diagram, relationship));
         }
 
         for (Type type : orphanTypes.values()) {
-            printWriter.println(print(type));
+            printWriter.println(print(diagram, type));
         }
 
         return stringWriter.toString();
     }
 
-    private String print(Type type) {
-        return String.format("[%s]", type.getName());
+    private String print(Diagram diagram, Type type) {
+        Map<String, String> properties = PropertiesDiagramHelper.getProperties(diagram, type);
+
+        if (properties.isEmpty()) {
+            return String.format("[%s]", type.getName());
+        }
+
+        String propertiesFormatted = properties
+            .entrySet()
+            .stream()
+            .map((e) -> e.getKey() + ":" + e.getValue())
+            .collect(Collectors.joining(";"));
+
+        return String.format("[%s|%s]", type.getName(), propertiesFormatted);
     }
 
-    private String print(Relationship r) {
+    private String print(Diagram diagram, Relationship r) {
         switch (r.getType()) {
             case ASSOCIATION:
                 return String.format("%s%s%s-%s>%s",
-                    print(r.getSource()),
+                    print(diagram, r.getSource()),
                     r.isBidirectional() ? "<" : "",
                     cardinalityAndTitle(r.getSourceCardinality(), r.getSourceTitle()),
                     cardinalityAndTitle(r.getDestinationCardinality(), r.getDestinationTitle()),
-                    print(r.getDestination())
+                    print(diagram, r.getDestination())
                 );
             case AGGREGATION:
                 return String.format("%s<>%s-%s>%s",
-                    print(r.getSource()),
+                    print(diagram, r.getSource()),
                     cardinalityAndTitle(r.getSourceCardinality(), r.getSourceTitle()),
                     cardinalityAndTitle(r.getDestinationCardinality(), r.getDestinationTitle()),
-                    print(r.getDestination())
+                    print(diagram, r.getDestination())
                 );
             case COMPOSITION:
                 return String.format("%s++%s-%s>%s",
-                    print(r.getSource()),
+                    print(diagram, r.getSource()),
                     cardinalityAndTitle(r.getSourceCardinality(), r.getSourceTitle()),
                     cardinalityAndTitle(r.getDestinationCardinality(), r.getDestinationTitle()),
-                    print(r.getDestination())
+                    print(diagram, r.getDestination())
                 );
             case INHERITANCE:
-                return String.format("%s^%s", print(r.getDestination()), print(r.getSource()));
+                return String.format("%s^%s", print(diagram, r.getDestination()), print(diagram, r.getSource()));
         }
         throw new IllegalArgumentException("Unknown type of relationship: " + r.getType());
     }

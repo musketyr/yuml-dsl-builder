@@ -42,6 +42,16 @@ class DiagramSpec extends Specification {
         [<<RelationshipType>>]++1->[<<Relationship>>]
     '''.stripIndent().trim()
 
+    private static final String EXPECTED_DIAGRAM_PROPERTIES = '''
+        [note: YUML Diagram Components]
+        [Type|name:string]<>1..*->[Diagram]
+        [Note]<>0..*->[Diagram]
+        [Relationship]<>0..*->[Diagram]
+        [Type|name:string]<>source 1->[Relationship]
+        [Type|name:string]<>destination 1->[Relationship]
+        [RelationshipType]++1->[Relationship]
+    '''.stripIndent().trim()
+
     @Unroll
     void 'create #title diagram'() {
         given:
@@ -59,6 +69,7 @@ class DiagramSpec extends Specification {
             'diagram with methods'          | buildDiagramDiagramUsingHelperMethods() | EXPECTED_DIAGRAM_DIAGRAM
             'diagram with internal methods' | buildDiagramWithInternalMethodCalls()   | EXPECTED_DIAGRAM_DIAGRAM
             'diagram with stereotypes'      | buildDiagramStereotypes()               | EXPECTED_DIAGRAM_STEROTYPES
+            'diagram with properties'       | buildDiagramProperties()                | EXPECTED_DIAGRAM_PROPERTIES
     }
 
     @CompileStatic
@@ -191,6 +202,30 @@ class DiagramSpec extends Specification {
             stereotype 'Relationship' has one stereotype 'Type' called 'source'
             stereotype 'Relationship' has one stereotype 'Type' called 'destination'
             stereotype 'Relationship' owns one stereotype 'RelationshipType'
+        }
+    }
+
+    @CompileStatic
+    private static Diagram buildDiagramProperties() {
+        Diagram.build {
+            note 'YUML Diagram Components'
+
+            // diagram should have at least one type to be meaningful, rest is optional
+            type 'Diagram', {
+                has one to many type 'Type'
+                has zero to many type notes
+                has zero to many type 'Relationship'
+            }
+
+            type 'Relationship', {
+                has one type 'Type' called 'source'
+                has one type 'Type' called 'destination'
+                owns one type 'RelationshipType'
+            }
+
+            type 'Type', {
+                property name: 'string'
+            }
         }
     }
 

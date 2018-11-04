@@ -5,6 +5,7 @@ import cz.orany.yuml.model.RelationshipType;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
+import groovy.transform.stc.FirstParam;
 import groovy.transform.stc.SimpleType;
 
 public interface DiagramDefinition {
@@ -113,5 +114,18 @@ public interface DiagramDefinition {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     );
+
+    default <H extends DiagramHelper> H add(Class<H> helper) {
+        return (H) configure(helper, Closure.IDENTITY);
+    }
+
+    <H extends DiagramHelper, R> H configure(
+        @DelegatesTo.Target("helper") Class<H> helper,
+        @DelegatesTo(value = DelegatesTo.Target.class, target = "helper", strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0)
+        @ClosureParams(FirstParam.FirstGenericType.class)
+        Closure<R> configuration
+    );
+
+    void postprocess();
 
 }
