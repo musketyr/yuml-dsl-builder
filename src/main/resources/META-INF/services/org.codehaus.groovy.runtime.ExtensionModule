@@ -1,4 +1,4 @@
 moduleName=yuml-extra
 moduleVersion=0.1.0
 extensionClasses=cz.orany.yuml.stereotype.StereotypeExtensions,cz.orany.yuml.properties.PropertiesDiagramHelperExtensions,cz.orany.yuml.model.dsl.groovy.DiagramGroovyExtensions
-staticExtensionClasses=
+staticExtensionClasses=cz.orany.yuml.model.dsl.groovy.DiagramGroovyStaticExtensions

@@ -88,7 +88,7 @@ public interface DiagramDefinition {
         return configure(helper,  (h) -> {});
     }
 
-    <H extends DiagramHelper, R> H configure(Class<H> helper, Consumer<H> additionalProperties);
+    <H extends DiagramHelper> H configure(Class<H> helper, Consumer<H> additionalProperties);
 
     void postprocess();
 

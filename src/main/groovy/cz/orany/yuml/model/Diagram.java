@@ -7,10 +7,11 @@ import groovy.lang.DelegatesTo;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public interface Diagram {
 
-    static Diagram build(@DelegatesTo(value = DiagramDefinition.class, strategy = Closure.DELEGATE_FIRST) Closure definition) {
+    static Diagram create(Consumer<DiagramDefinition> definition) {
         return DefaultDiagramFactory.build(definition);
     }
 

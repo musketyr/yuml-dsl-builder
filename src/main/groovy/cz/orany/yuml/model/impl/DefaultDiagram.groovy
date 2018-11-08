@@ -4,7 +4,6 @@ import cz.orany.yuml.model.Diagram
 import cz.orany.yuml.model.Note
 import cz.orany.yuml.model.RelationshipType
 import cz.orany.yuml.model.Type
-import cz.orany.yuml.model.dsl.DiagramContentDefinition
 import cz.orany.yuml.model.dsl.DiagramDefinition
 import cz.orany.yuml.model.dsl.DiagramHelper
 import cz.orany.yuml.model.dsl.RelationshipDefinition
@@ -13,10 +12,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 import groovy.transform.ToString
-import groovy.transform.stc.ClosureParams
-import groovy.transform.stc.FirstParam
-import groovy.transform.stc.SimpleType
-import org.codehaus.groovy.runtime.DefaultGroovyMethods
+
+import java.util.function.Consumer
 
 @ToString
 @PackageScope
@@ -28,13 +25,8 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
     final Collection<DefaultRelationship> relationships = new LinkedHashSet<>()
     final Map<String, Object> metadata = new LinkedHashMap<>();
 
-    private final Object owner;
     private final Map<String, DefaultType> typesMap = [:].withDefault { key -> new DefaultType(this, key.toString()) }
     private final Map<Class<? extends DiagramHelper>, DiagramHelper> helperMap = [:]
-
-    DefaultDiagram(Object owner) {
-        this.owner = owner
-    }
 
     @Override
     Collection<? extends Type> getTypes() {
@@ -51,12 +43,10 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
     @Override
     DefaultType type(
         String name,
-        @DelegatesTo(value = TypeDefinition.class, strategy = Closure.DELEGATE_FIRST)
-        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.TypeDefinition")
-        Closure<? extends DiagramContentDefinition> builder
+        Consumer<TypeDefinition> builder
     ) {
         DefaultType type = typesMap[name]
-        withSameOwner type, builder
+        builder.accept(type)
         return type
     }
 
@@ -65,32 +55,18 @@ class DefaultDiagram implements Diagram, DiagramDefinition {
         String source,
         RelationshipType relationshipType,
         String destination,
-        @DelegatesTo(value = RelationshipDefinition.class, strategy = Closure.DELEGATE_FIRST)
-        @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
-        Closure<? extends DiagramContentDefinition> additionalProperties
+        Consumer<RelationshipDefinition> additionalProperties
     ) {
-        DefaultRelationship relationship = new DefaultRelationship(this, type(source, Closure.IDENTITY), relationshipType, type(destination, Closure.IDENTITY))
-        withSameOwner relationship, additionalProperties
+        DefaultRelationship relationship = new DefaultRelationship(this, typesMap[source], relationshipType, typesMap[destination])
+        additionalProperties.accept(relationship)
         this.relationships.add(relationship)
         return relationship
     }
 
-    protected <V, T> V withSameOwner(T self, Closure<V> closure) {
-        final Closure<V> clonedClosure = closure.rehydrate(self, owner, closure.thisObject)
-        clonedClosure.setResolveStrategy(Closure.DELEGATE_FIRST);
-        clonedClosure.call(self)
-    }
-
     @Override
-    public <H extends DiagramHelper, R> H configure(
-        @DelegatesTo.Target("helper")
-        Class<H> helper,
-        @DelegatesTo(value = DelegatesTo.Target.class, target = "helper", strategy = Closure.DELEGATE_FIRST, genericTypeIndex = 0)
-        @ClosureParams(FirstParam.FirstGenericType.class)
-        Closure<R> configuration
-    ) {
+    public <H extends DiagramHelper> H configure(Class<H> helper, Consumer<H> configuration) {
         H helperInstance = (H) helperMap.computeIfAbsent(helper, { helper.newInstance()})
-        DefaultGroovyMethods.with(helperInstance, configuration)
+        configuration.accept(helperInstance)
         return helperInstance
     }
 

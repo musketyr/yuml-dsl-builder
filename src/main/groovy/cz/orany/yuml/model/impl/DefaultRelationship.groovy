@@ -18,11 +18,11 @@ class DefaultRelationship implements Relationship, RelationshipDefinition {
 
     private final DefaultDiagram diagram
 
-    final Type source
+    final DefaultType source
     final RelationshipType type
-    final Type destination
+    final DefaultType destination
 
-    DefaultRelationship(DefaultDiagram diagram, Type source, RelationshipType type = RelationshipType.ASSOCIATION, Type destination) {
+    DefaultRelationship(DefaultDiagram diagram, DefaultType source, RelationshipType type = RelationshipType.ASSOCIATION, DefaultType destination) {
         this.diagram = diagram
         this.source = source
         this.type = type
