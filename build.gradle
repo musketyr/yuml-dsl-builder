@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy:2.5.2'
-    compile 'space.jasan:groovy-closure-support:0.3.0'
+    compile 'space.jasan:groovy-closure-support:0.4.0'
     testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
 }
 

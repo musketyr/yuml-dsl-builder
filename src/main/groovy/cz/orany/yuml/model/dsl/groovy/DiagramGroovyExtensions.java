@@ -11,22 +11,6 @@ import space.jasan.support.groovy.closure.ConsumerWithDelegate;
 
 public class DiagramGroovyExtensions {
 
-    public static From getFrom(DiagramDefinition self) {
-        return From.FROM;
-    }
-
-    public static Integer getZero(DiagramDefinition self) {
-        return 0;
-    }
-
-    public static Integer getOne(DiagramDefinition self) {
-        return 1;
-    }
-
-    public static String getMany(DiagramDefinition self) {
-        return "*";
-    }
-
     public static TypeDefinition type(
         DiagramDefinition self,
         String name,
@@ -34,7 +18,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.TypeDefinition")
         Closure<? extends DiagramContentDefinition> builder
     ) {
-        return self.type(name, ConsumerWithDelegate.create(builder, self));
+        return self.type(name, ConsumerWithDelegate.create(builder));
     }
 
     public static RelationshipDefinition aggregation(
@@ -45,7 +29,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        return self.relationship(source, RelationshipType.AGGREGATION, destination, ConsumerWithDelegate.create(additionalProperties, self));
+        return self.relationship(source, RelationshipType.AGGREGATION, destination, ConsumerWithDelegate.create(additionalProperties));
     }
 
     public static RelationshipDefinition composition(
@@ -56,7 +40,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        return self.relationship(source, RelationshipType.COMPOSITION, destination, ConsumerWithDelegate.create(additionalProperties, self));
+        return self.relationship(source, RelationshipType.COMPOSITION, destination, ConsumerWithDelegate.create(additionalProperties));
     }
 
     public static RelationshipDefinition inheritance(
@@ -67,7 +51,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        return self.relationship(source, RelationshipType.INHERITANCE, destination, ConsumerWithDelegate.create(additionalProperties, self));
+        return self.relationship(source, RelationshipType.INHERITANCE, destination, ConsumerWithDelegate.create(additionalProperties));
     }
 
     public static RelationshipDefinition association(
@@ -78,7 +62,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        return self.relationship(source, RelationshipType.ASSOCIATION, destination, ConsumerWithDelegate.create(additionalProperties, self));
+        return self.relationship(source, RelationshipType.ASSOCIATION, destination, ConsumerWithDelegate.create(additionalProperties));
     }
 
     public static RelationshipDefinition relationship(
@@ -90,7 +74,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(value = SimpleType.class, options = "cz.orany.yuml.model.dsl.RelationshipDefinition")
         Closure<? extends DiagramContentDefinition> additionalProperties
     ) {
-        return self.relationship(source, relationshipType, destination, ConsumerWithDelegate.create(additionalProperties, self));
+        return self.relationship(source, relationshipType, destination, ConsumerWithDelegate.create(additionalProperties));
     }
 
     public static <H extends DiagramHelper, R> H configure(
@@ -100,7 +84,7 @@ public class DiagramGroovyExtensions {
         @ClosureParams(FirstParam.FirstGenericType.class)
         Closure<R> configuration
     ) {
-        return self.configure(helper, ConsumerWithDelegate.create(configuration, self));
+        return self.configure(helper, ConsumerWithDelegate.create(configuration));
     }
 
 }

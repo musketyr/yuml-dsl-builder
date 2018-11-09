@@ -14,6 +14,7 @@ public class PropertiesDiagramHelper implements DiagramHelper {
 
     private final Map<String, Map<String, String>> typeToProperties = new LinkedHashMap<>();
 
+    @SuppressWarnings("unchecked")
     public static Map<String, String> getProperties(Diagram diagram, Type type) {
         Map<String, Map<String, String>> typeToProperties =
             (Map<String, Map<String, String>>) diagram.getMetadata().computeIfAbsent(METADATA_KEY, (key) -> new LinkedHashMap<>());

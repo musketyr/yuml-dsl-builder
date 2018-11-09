@@ -9,6 +9,8 @@ import groovy.transform.CompileStatic
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static cz.orany.yuml.model.dsl.DiagramKeywords.*
+
 class DiagramSpec extends Specification {
 
     private static final String EXPECTED_DIAGRAM = '''
