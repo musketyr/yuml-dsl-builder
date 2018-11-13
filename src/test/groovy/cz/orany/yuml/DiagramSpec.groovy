@@ -5,6 +5,7 @@ import cz.orany.yuml.export.YumlDiagramPrinter
 import cz.orany.yuml.model.Diagram
 import cz.orany.yuml.model.dsl.DiagramContentDefinition
 import cz.orany.yuml.model.dsl.DiagramDefinition
+import cz.orany.yuml.model.dsl.groovy.DiagramGroovyExtensions
 import groovy.transform.CompileStatic
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -80,12 +81,12 @@ class DiagramSpec extends Specification {
             note('You can stick notes on diagrams too!', 'skyblue')
 
             aggregation('Customer', 'Order') {
-                source '1'
-                destination '0..*', 'orders'
+                source cardinality: '1'
+                destination cardinality: '0..*', title: 'orders'
             }
 
             composition('Order', 'LineItem') {
-                source '*'
+                DiagramGroovyExtensions.source it, cardinality: '*'
                 destination '*'
             }
 

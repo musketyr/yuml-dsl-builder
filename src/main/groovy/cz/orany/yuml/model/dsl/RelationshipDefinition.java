@@ -1,5 +1,7 @@
 package cz.orany.yuml.model.dsl;
 
+import groovy.transform.NamedParam;
+
 public interface RelationshipDefinition extends DiagramContentDefinition, HasDiagramDefinition {
     RelationshipDefinition bidirectional(boolean bidirectional);
 
@@ -13,7 +15,7 @@ public interface RelationshipDefinition extends DiagramContentDefinition, HasDia
         return destination(cardinality, null);
     }
 
-    RelationshipDefinition destination(String cardinality, String title);
+    RelationshipDefinition destination(@NamedParam("cardinality") String cardinality, @NamedParam("title") String title);
 
     RelationshipDefinition called(String sourceTitle);
 }
