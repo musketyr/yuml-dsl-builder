@@ -80,8 +80,8 @@ class DiagramSpec extends Specification {
             note('You can stick notes on diagrams too!', 'skyblue')
 
             aggregation('Customer', 'Order') {
-                source '1'
-                destination '0..*', 'orders'
+                source cardinality: '1'
+                destination cardinality: '0..*', title: 'orders'
             }
 
             composition('Order', 'LineItem') {
